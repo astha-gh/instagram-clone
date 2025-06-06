@@ -1,4 +1,4 @@
 module.exports = {
     MONGOURI: process.env.MONGOURI,
-    JWT_SECRETS: process.env.JWT_SECRETS
+    JWT_SECRET: process.env.JWT_SECRET
 }

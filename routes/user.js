@@ -5,7 +5,7 @@ const requiredLogin = require('../middleware/requireLogin')
 const Post = mongoose.model("Post");
 const User = mongoose.model("User")
 
-router.get('profile/:id', requiredLogin, async (req, res) => {
+router.get('/profile/:id', requiredLogin, async (req, res) => {
     try {
         const user = await User.findOne({ _id: req.params.id }).select("-password");
         if (!user) {
@@ -22,7 +22,7 @@ router.get('profile/:id', requiredLogin, async (req, res) => {
     }
 });
 
-router.put('follow', requiredLogin, async (req, res) => {
+router.put('/follow', requiredLogin, async (req, res) => {
     try {
         const updatedFollowedUser = await User.findByIdAndUpdate(
             req.body.followId,
@@ -44,7 +44,7 @@ router.put('follow', requiredLogin, async (req, res) => {
 });
 
 
-router.put('unfollow', requiredLogin, async (req, res) => {
+router.put('/unfollow', requiredLogin, async (req, res) => {
     try {
         const updatedUnfollowedUser = await User.findByIdAndUpdate(
             req.body.unfollowId,
@@ -65,7 +65,7 @@ router.put('unfollow', requiredLogin, async (req, res) => {
     }
 });
 
-router.get('profile/:id/followers', requiredLogin, async (req, res) => {
+router.get('/profile/:id/followers', requiredLogin, async (req, res) => {
     try {
         const user = await User.findById(req.params.id).populate("followers", "_id name pic");
         res.json(user.followers);
@@ -74,7 +74,7 @@ router.get('profile/:id/followers', requiredLogin, async (req, res) => {
     }
 });
 
-router.get('profile/:id/following', requiredLogin, async (req, res) => {
+router.get('/profile/:id/following', requiredLogin, async (req, res) => {
     try {
         const user = await User.findById(req.params.id).populate("following", "_id name pic");
         res.json(user.following);
@@ -83,7 +83,7 @@ router.get('profile/:id/following', requiredLogin, async (req, res) => {
     }
 });
 
-router.put('updatepic', requiredLogin, async (req, res) => {
+router.put('/updatepic', requiredLogin, async (req, res) => {
     try {
         if (!req.body.pic) {
             return res.status(422).json({ error: "Picture URL is required" });

@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const PORT = process.env.PORT || 4444;
-const { MONGOURI , JWT_SECRETS } = require('./config/keys')
+const { MONGOURI, JWT_SECRET } = require('./config/keys')
+const path = require('path');
 
 mongoose.connect(MONGOURI);
 mongoose.connection.on('connected', () => {
@@ -17,33 +18,33 @@ require('./models/post')
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+    console.log(`Incoming: ${req.method} ${req.path}`);
+    next();
+})
+
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/posts', require('./routes/posts'));
 app.use('/api/user', require('./routes/user'));
 
-
-const customMiddleware = (req, res, next) => {
-    console.log("I am a middleware");
-    next();
-}
 
 app.get('/', (req, res) => {
     console.log("Home");
     res.send("Hello Instagram");
 });
 
-app.get('/about', customMiddleware, (req, res) => {
-    console.log("about");
-    res.send("About Page");
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
+}
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Server Error');
 });
 
-if (process.env.NODE_ENV == "production") {
-    app.use(express.static('client/build'))
-    const path = require('path');
-    app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-    })
-}
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);

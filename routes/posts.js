@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const requiredLogin = require('../middleware/requireLogin')
 const Post = mongoose.model("Post");
 
-router.get('allpost', requiredLogin, (req, res) => {
+router.get('/allpost', requiredLogin, (req, res) => {
     Post.find()
         .populate("postedBy", "_id name")
         .populate("comments.postedBy", "_id name")
@@ -17,7 +17,7 @@ router.get('allpost', requiredLogin, (req, res) => {
         });
 });
 
-router.post('createpost' ,requiredLogin, (req , res) => {
+router.post('/createpost' ,requiredLogin, (req , res) => {
     const {title , body , photo} = req.body
     if(!title || !body || !photo){
         return res.status(422).json({error : "Please add all the fields"})
@@ -37,7 +37,7 @@ router.post('createpost' ,requiredLogin, (req , res) => {
     })
 }) 
 
-router.get('mypost' ,requiredLogin, (req , res) => {
+router.get('/mypost' ,requiredLogin, (req , res) => {
     Post.find({postedBy:req.user._id})
     .populate("postedBy" , "_id name")
     .then(mypost => {
@@ -48,7 +48,7 @@ router.get('mypost' ,requiredLogin, (req , res) => {
     })
 })
 
-router.put('like', requiredLogin, async (req, res) => {
+router.put('/like', requiredLogin, async (req, res) => {
     try {
         console.log("Incoming like request:", req.body);
 
@@ -67,7 +67,7 @@ router.put('like', requiredLogin, async (req, res) => {
     }
 });
 
-router.put('unlike', requiredLogin, async (req, res) => {
+router.put('/unlike', requiredLogin, async (req, res) => {
     try {
         const result = await Post.findByIdAndUpdate(
             req.body.postId,
@@ -84,7 +84,7 @@ router.put('unlike', requiredLogin, async (req, res) => {
     }
 });
 
-router.put('comment', requiredLogin, async (req, res) => {
+router.put('/comment', requiredLogin, async (req, res) => {
     const comment = {
         text: req.body.text,
         postedBy: req.user._id
@@ -108,7 +108,7 @@ router.put('comment', requiredLogin, async (req, res) => {
     }
 });
 
-router.delete('deletepost/:postId', requiredLogin, async (req, res) => {
+router.delete('/deletepost/:postId', requiredLogin, async (req, res) => {
     try {
         const post = await Post.findOne({ _id: req.params.postId })
         .populate("postedBy", "_id");
@@ -129,7 +129,7 @@ router.delete('deletepost/:postId', requiredLogin, async (req, res) => {
     }
 });
 
-router.put('deletecomment', requiredLogin, async (req, res) => {
+router.put('/deletecomment', requiredLogin, async (req, res) => {
     const {postId , commentId} = req.body;
     Post.findByIdAndUpdate(
         postId, {
@@ -149,7 +149,7 @@ router.put('deletecomment', requiredLogin, async (req, res) => {
     })
 });
 
-router.get('getsubpost', requiredLogin, (req, res) => {
+router.get('/getsubpost', requiredLogin, (req, res) => {
     Post.find({postedBy:{$in:req.user.following}})
         .populate("postedBy", "_id name")
         .populate("comments.postedBy", "_id name")

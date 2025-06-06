@@ -1,4 +1,4 @@
 module.exports = {
-    MONGOURI: "mongodb+srv://asthadevadiga7:2AGB431xBIPbBAVd@asthacluster.gvjdyip.mongodb.net/?retryWrites=true&w=majority&appName=asthaCluster",
-    JWT_SECRETS: "popipopipopoppippo"
+    MONGOURI: process.env.MONGOURI,
+    JWT_SECRETS: process.env.JWT_SECRETS
 }

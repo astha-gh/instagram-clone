@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const PORT = process.env.PORT || 4444;
-const { MONGOURI } = require('./config/keys')
+const { MONGOURI , JWT_SECRETS } = require('./config/keys')
 
 mongoose.connect(MONGOURI);
 mongoose.connection.on('connected', () => {
@@ -17,9 +17,9 @@ require('./models/post')
 
 app.use(express.json());
 
-app.use(require('./routes/auth'));
-app.use(require('./routes/posts'));
-app.use(require('./routes/user'));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/posts', require('./routes/posts'));
+app.use('/api/user', require('./routes/user'));
 
 
 const customMiddleware = (req, res, next) => {

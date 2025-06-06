@@ -1,0 +1,21 @@
+{
+  "name": "instagram-clone",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start" : "node app.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.2",
+    "react-modal": "^3.16.3"
+  }
+}

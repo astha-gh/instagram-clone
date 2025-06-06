@@ -5,7 +5,7 @@ const requiredLogin = require('../middleware/requireLogin')
 const Post = mongoose.model("Post");
 const User = mongoose.model("User")
 
-router.get('user/:id', requiredLogin, async (req, res) => {
+router.get('profile/:id', requiredLogin, async (req, res) => {
     try {
         const user = await User.findOne({ _id: req.params.id }).select("-password");
         if (!user) {
@@ -65,7 +65,7 @@ router.put('unfollow', requiredLogin, async (req, res) => {
     }
 });
 
-router.get('user/:id/followers', requiredLogin, async (req, res) => {
+router.get('profile/:id/followers', requiredLogin, async (req, res) => {
     try {
         const user = await User.findById(req.params.id).populate("followers", "_id name pic");
         res.json(user.followers);
@@ -74,7 +74,7 @@ router.get('user/:id/followers', requiredLogin, async (req, res) => {
     }
 });
 
-router.get('user/:id/following', requiredLogin, async (req, res) => {
+router.get('profile/:id/following', requiredLogin, async (req, res) => {
     try {
         const user = await User.findById(req.params.id).populate("following", "_id name pic");
         res.json(user.following);
